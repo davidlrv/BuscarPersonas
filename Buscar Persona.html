@@ -1,0 +1,73 @@
+﻿ 
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Pruebas de API Buscar Personas</title>
+ 
+  </head>
+  <body>
+    <h2>Buscar Personas</h2>
+	
+    <input id="txtBusqueda" type="text" name="txtBusqueda" title="Aqui ingresar nombre o identificacion!!!">
+    <input type="button" value ="Buscar" onclick="javascript:Buscar()">
+    <input type="button" value ="Limpiar" onclick="javascript:Limpiar()">
+    
+    <table border=1 id = "tbResultado">
+    </table>                          
+	
+	
+ </body>
+</html>
+
+<script>  
+function Limpiar()
+{
+	document.getElementById('txtBusqueda').value  = "";
+    document.getElementById('tbResultado').innerHTML = "";
+}
+function Buscar()
+{
+	//Validando
+	if(document.getElementById('txtBusqueda').value.length < 1) 
+	  return false;
+	else
+	{
+		var txtValoraBuscar = document.getElementById('txtBusqueda').value;
+		
+		var url = " https://ventanilla.registropublico.gob.ni/VentanillaPublicaApi/api//Persona/ObtenerListadoPersonaNaturalPorCriterioBusqueda?Nombre="+txtValoraBuscar+"&Identificacion="+txtValoraBuscar
+
+		var xmlHttp = new XMLHttpRequest();
+
+		xmlHttp.open("GET", url, false);
+		xmlHttp.send(null);
+
+		var data = xmlHttp.responseText;
+
+		var Personas= JSON.parse(data);
+		
+		var tablaCabecerra = `<tr>                             
+                            		<th>Identificacion</th>                   
+                            		<th>Nombre Completo</th>               
+                          	      </tr>`;
+		if(Personas.Data.length ==0) 
+		{			
+			tablaCabecerra = `<tr>                             
+                            		<th>No hay datos compatibles con la busqueda!!!</th>  
+                          	   </tr>`;
+		}
+		
+		document.getElementById('tbResultado').innerHTML = tablaCabecerra;
+		for(x in Personas.Data)
+		{		
+			if(Personas.Data[x].TipoIdentificacion == 'Cédula de Identidad' || Personas.Data[x].TipoIdentificacion =='Carnet de Notario')
+				{
+					var htmlFila = "<tr>  <td>"+ Personas.Data[x].CodigoIdentificacion +"</td>  <td>"+ Personas.Data[x].NombreCompleto +"</td> </tr>";		
+					document.getElementById('tbResultado').insertRow(-1).innerHTML = htmlFila;
+				}
+			
+		}
+	}
+}
+
+</script>
