@@ -1,9 +1,9 @@
-﻿ 
+﻿  
 <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>Pruebas de API Buscar Personas!!!!</title>
+    <title>Pruebas de API Buscar Personas</title>
  
   </head>
   <body>
@@ -26,6 +26,7 @@ function Limpiar()
 	document.getElementById('txtBusqueda').value  = "";
     document.getElementById('tbResultado').innerHTML = "";
 }
+
 function Buscar()
 {
 	//Validando
@@ -34,8 +35,13 @@ function Buscar()
 	else
 	{
 		var txtValoraBuscar = document.getElementById('txtBusqueda').value;
+
+		//var url = "http://srv-siicar-app.registropublico.gob.ni/ventanillaprivada/API/TablaBasica/ObtenerPersona?Nombre="+txtValoraBuscar+"&Identificacion="+txtValoraBuscar
 		
-		var url = " https://ventanilla.registropublico.gob.ni/VentanillaPublicaApi/api//Persona/ObtenerListadoPersonaNaturalPorCriterioBusqueda?Nombre="+txtValoraBuscar+"&Identificacion="+txtValoraBuscar
+		var url = "https://demo-garantia.poderjudicial.gob.ni/VentanillaPublicaApi/api//Persona/ObtenerListadoPersonaNaturalPorCriterioBusqueda?Nombre="+txtValoraBuscar+"&Identificacion="+txtValoraBuscar
+
+		//var url = " https://ventanilla.registropublico.gob.ni/VentanillaPublicaApi/api//Persona/ObtenerListadoPersonaNaturalPorCriterioBusqueda?Nombre="+txtValoraBuscar+"&Identificacion="+txtValoraBuscar
+
 
 		var xmlHttp = new XMLHttpRequest();
 
@@ -43,6 +49,7 @@ function Buscar()
 		xmlHttp.send(null);
 
 		var data = xmlHttp.responseText;
+
 
 		var Personas= JSON.parse(data);
 		
@@ -53,21 +60,20 @@ function Buscar()
 		if(Personas.Data.length ==0) 
 		{			
 			tablaCabecerra = `<tr>                             
-                            		<th>No hay datos compatibles con la busqueda!!!</th>  
-                          	   </tr>`;
+                            		     <th>No hay datos compatibles con la busqueda!!!</th>  
+                          	         </tr>`;
 		}
 		
+
 		document.getElementById('tbResultado').innerHTML = tablaCabecerra;
 		for(x in Personas.Data)
 		{		
-			if(Personas.Data[x].TipoIdentificacion == 'Cédula de Identidad' || Personas.Data[x].TipoIdentificacion =='Carnet de Notario')
-				{
-					var htmlFila = "<tr>  <td>"+ Personas.Data[x].CodigoIdentificacion +"</td>  <td>"+ Personas.Data[x].NombreCompleto +"</td> </tr>";		
-					document.getElementById('tbResultado').insertRow(-1).innerHTML = htmlFila;
-				}
-			
+			var htmlFila = "<tr>  <td>"+ Personas.Data[x].CodigoIdentificacion +"</td>  <td>"+ Personas.Data[x].NombreCompleto +"</td> </tr>";		
+			document.getElementById('tbResultado').insertRow(-1).innerHTML = htmlFila;
 		}
-	}
+
+	}	  
+
 }
 
 </script>
