@@ -1,10 +1,47 @@
-﻿  
 <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="utf-8">
     <title>Pruebas de API Buscar Personas</title>
- 
+ <style type="text/css">
+	
+	h2{
+		color: #8BC34A;
+		background-color: #50614f;
+	}
+	table{
+		padding-top: 10px;
+		border-style: none;
+	}
+	
+	th{
+		background: #8BC34A;
+	}
+	
+	th{		
+		border-top-color: transparent;
+		border-right-color: transparent;
+		border-bottom-color: darkgreen;
+		border-left-color: transparent;
+		
+	}
+	#thnombres{
+	width: 350px;
+	}
+	td{		
+		border-top-color: transparent;
+		border-right-color: transparent;
+		border-bottom-color: darkgreen;
+		border-left-color: transparent;
+		text-align: left;
+		padding-left: 15px;
+	}
+	input{		
+		font-size: 15px;
+		color: #4CAF50;
+	}
+	
+</style>
   </head>
   <body>
     <h2>Buscar Personas</h2>
@@ -14,9 +51,8 @@
     <input type="button" value ="Limpiar" onclick="javascript:Limpiar()">
     
     <table border=1 id = "tbResultado">
-    </table>                          
-	
-	
+    </table> 
+	  
  </body>
 </html>
 
@@ -26,7 +62,6 @@ function Limpiar()
 	document.getElementById('txtBusqueda').value  = "";
     document.getElementById('tbResultado').innerHTML = "";
 }
-
 function Buscar()
 {
 	//Validando
@@ -35,27 +70,19 @@ function Buscar()
 	else
 	{
 		var txtValoraBuscar = document.getElementById('txtBusqueda').value;
-
-		//var url = "http://srv-siicar-app.registropublico.gob.ni/ventanillaprivada/API/TablaBasica/ObtenerPersona?Nombre="+txtValoraBuscar+"&Identificacion="+txtValoraBuscar
-		
-		var url = "https://demo-garantia.poderjudicial.gob.ni/VentanillaPublicaApi/api//Persona/ObtenerListadoPersonaNaturalPorCriterioBusqueda?Nombre="+txtValoraBuscar+"&Identificacion="+txtValoraBuscar
-
-		//var url = " https://ventanilla.registropublico.gob.ni/VentanillaPublicaApi/api//Persona/ObtenerListadoPersonaNaturalPorCriterioBusqueda?Nombre="+txtValoraBuscar+"&Identificacion="+txtValoraBuscar
-
+		var url = " https://ventanilla.registropublico.gob.ni/VentanillaPublicaApi/api//Persona/ObtenerListadoPersonaNaturalPorCriterioBusqueda?Nombre="+txtValoraBuscar+"&Identificacion="+txtValoraBuscar
 
 		var xmlHttp = new XMLHttpRequest();
-
 		xmlHttp.open("GET", url, false);
 		xmlHttp.send(null);
 
 		var data = xmlHttp.responseText;
 
-
 		var Personas= JSON.parse(data);
 		
 		var tablaCabecerra = `<tr>                             
                             		<th>Identificacion</th>                   
-                            		<th>Nombre Completo</th>               
+                            		<th id="thnombres">Nombre Completo</th>               
                           	      </tr>`;
 		if(Personas.Data.length ==0) 
 		{			
@@ -63,17 +90,12 @@ function Buscar()
                             		     <th>No hay datos compatibles con la busqueda!!!</th>  
                           	         </tr>`;
 		}
-		
-
 		document.getElementById('tbResultado').innerHTML = tablaCabecerra;
 		for(x in Personas.Data)
 		{		
 			var htmlFila = "<tr>  <td>"+ Personas.Data[x].CodigoIdentificacion +"</td>  <td>"+ Personas.Data[x].NombreCompleto +"</td> </tr>";		
 			document.getElementById('tbResultado').insertRow(-1).innerHTML = htmlFila;
 		}
-
-	}	  
-
+	}
 }
-
 </script>
