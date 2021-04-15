@@ -1,3 +1,4 @@
+ 
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -51,8 +52,9 @@
     <input type="button" value ="Limpiar 🗑️" onclick="javascript:Limpiar()">
     
     <table border=1 id = "tbResultado">
-    </table> 
-	  
+    </table>                          
+	
+	
  </body>
 </html>
 
@@ -62,6 +64,7 @@ function Limpiar()
 	document.getElementById('txtBusqueda').value  = "";
     document.getElementById('tbResultado').innerHTML = "";
 }
+
 function Buscar()
 {
 	//Validando
@@ -70,32 +73,45 @@ function Buscar()
 	else
 	{
 		var txtValoraBuscar = document.getElementById('txtBusqueda').value;
+
+		//var url = "http://srv-siicar-app.registropublico.gob.ni/ventanillaprivada/API/TablaBasica/ObtenerPersona?Nombre="+txtValoraBuscar+"&Identificacion="+txtValoraBuscar
+		
+		//var url = "https://demo-garantia.poderjudicial.gob.ni/VentanillaPublicaApi/api//Persona/ObtenerListadoPersonaNaturalPorCriterioBusqueda?Nombre="+txtValoraBuscar+"&Identificacion="+txtValoraBuscar
+
 		var url = " https://ventanilla.registropublico.gob.ni/VentanillaPublicaApi/api//Persona/ObtenerListadoPersonaNaturalPorCriterioBusqueda?Nombre="+txtValoraBuscar+"&Identificacion="+txtValoraBuscar
 
+
 		var xmlHttp = new XMLHttpRequest();
+
 		xmlHttp.open("GET", url, false);
 		xmlHttp.send(null);
 
 		var data = xmlHttp.responseText;
 
-		var Personas= JSON.parse(data);
+
+		var Personas= JSON.parse(JSON.parse(data).Data);
 		
 		var tablaCabecerra = `<tr>                             
                             		<th>Identificacion</th>                   
                             		<th id="thnombres">Nombre Completo</th>               
                           	      </tr>`;
-		if(Personas.Data.length ==0) 
+		if(Personas.persona.length ==0) 
 		{			
 			tablaCabecerra = `<tr>                             
                             		     <th>No hay datos compatibles con la busqueda!!!</th>  
                           	         </tr>`;
 		}
+		
+
 		document.getElementById('tbResultado').innerHTML = tablaCabecerra;
-		for(x in Personas.Data)
+		for(x in Personas.persona)
 		{		
-			var htmlFila = "<tr>  <td>"+ Personas.Data[x].CodigoIdentificacion +"</td>  <td>"+ Personas.Data[x].NombreCompleto +"</td> </tr>";		
+			var htmlFila = "<tr>  <td>"+ Personas.persona[x].CodigoIdentificacion +"</td>  <td>"+ Personas.persona[x].NombreCompleto +"</td> </tr>";		
 			document.getElementById('tbResultado').insertRow(-1).innerHTML = htmlFila;
 		}
-	}
+
+	}	  
+
 }
+
 </script>
