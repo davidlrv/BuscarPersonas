@@ -81,23 +81,24 @@
                     contentType: "application/json",
                     data: JSON.stringify(requestData),
                 });
-
-                let data = JSON.parse(JSON.parse(response).Data);
+                
+                let parsedResponse = JSON.parse(response);
+                let data = JSON.parse(parsedResponse.data[0].data);
+                let persona = data[0].PERSONA;
+                
                 let tbody = document.querySelector("#tbResultado tbody");
                 tbody.innerHTML = ""; // Limpia resultados previos
 
-                if (!data.persona || data.persona.length === 0) {
+                if (!persona) {
                     tbody.innerHTML = `<tr><td colspan="2">No hay datos compatibles con la búsqueda.</td></tr>`;
                     return;
                 }
-
-                data.persona.forEach(persona => {
-                    let fila = `<tr>
-                                    <td>${persona.CodigoIdentificacion || "N/A"}</td>
-                                    <td>${persona.NombreCompleto || "N/A"}</td>
-                                </tr>`;
-                    tbody.innerHTML += fila;
-                });
+                
+                let fila = `<tr>
+                                <td>${persona.IDENTIFICACION_NUMERO || "N/A"}</td>
+                                <td>${persona.NOMBRE_COMPLETO || "N/A"}</td>
+                            </tr>`;
+                tbody.innerHTML += fila;
 
             } catch (error) {
                 console.error("Error en la búsqueda:", error);
