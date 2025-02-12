@@ -74,41 +74,49 @@ function Buscar()
 	{
 		var txtValoraBuscar = document.getElementById('txtBusqueda').value;
 
-		//var url = "http://srv-siicar-app.registropublico.gob.ni/ventanillaprivada/API/TablaBasica/ObtenerPersona?Nombre="+txtValoraBuscar+"&Identificacion="+txtValoraBuscar
-		
-		//var url = "https://demo-garantia.poderjudicial.gob.ni/VentanillaPublicaApi/api//Persona/ObtenerListadoPersonaNaturalPorCriterioBusqueda?Nombre="+txtValoraBuscar+"&Identificacion="+txtValoraBuscar
+		var settings = {
+			"url": "https://portalapi.minsa.gob.ni/wsconsultasipai/v1/consulta/info/obtenerDatosPersonaVacuna",
+			"method": "POST",
+			"timeout": 0,
+			"headers": {
+				"Content-Type": "application/json"
+			},
+			"data": JSON.stringify({
+				"identificacion": "",
+				"primernombre": "DAVID",
+				"segundonombre": "Rafael",
+				"primerapellido": "RIVAS",
+				"segundoapellido": "Sanchez"
+			}),
+			};
 
-		var url = " https://ventanilla.registropublico.gob.ni/VentanillaPublicaApi/api//Persona/ObtenerListadoPersonaNaturalPorCriterioBusqueda?Nombre="+txtValoraBuscar+"&Identificacion="+txtValoraBuscar
+		$.ajax(settings).done(function (response) {
+				console.log(response);
+				
+				var data = response;
 
+				var Personas= JSON.parse(JSON.parse(data).Data);
+				
+				var tablaCabecerra = `<tr>                             
+											<th>Identificacion</th>                   
+											<th id="thnombres">Nombre Completo</th>               
+										</tr>`;
+				if(Personas.persona.length ==0) 
+				{			
+					tablaCabecerra = `<tr>                             
+												<th>No hay datos compatibles con la busqueda!!!</th>  
+											</tr>`;
+				}
+				
 
-		var xmlHttp = new XMLHttpRequest();
+				document.getElementById('tbResultado').innerHTML = tablaCabecerra;
+				for(x in Personas.persona)
+				{		
+					var htmlFila = "<tr>  <td>"+ Personas.persona[x].CodigoIdentificacion +"</td>  <td>"+ Personas.persona[x].NombreCompleto +"</td> </tr>";		
+					document.getElementById('tbResultado').insertRow(-1).innerHTML = htmlFila;
+				}
+			});
 
-		xmlHttp.open("GET", url, false);
-		xmlHttp.send(null);
-
-		var data = xmlHttp.responseText;
-
-
-		var Personas= JSON.parse(JSON.parse(data).Data);
-		
-		var tablaCabecerra = `<tr>                             
-                            		<th>Identificacion</th>                   
-                            		<th id="thnombres">Nombre Completo</th>               
-                          	      </tr>`;
-		if(Personas.persona.length ==0) 
-		{			
-			tablaCabecerra = `<tr>                             
-                            		     <th>No hay datos compatibles con la busqueda!!!</th>  
-                          	         </tr>`;
-		}
-		
-
-		document.getElementById('tbResultado').innerHTML = tablaCabecerra;
-		for(x in Personas.persona)
-		{		
-			var htmlFila = "<tr>  <td>"+ Personas.persona[x].CodigoIdentificacion +"</td>  <td>"+ Personas.persona[x].NombreCompleto +"</td> </tr>";		
-			document.getElementById('tbResultado').insertRow(-1).innerHTML = htmlFila;
-		}
 
 	}	  
 
