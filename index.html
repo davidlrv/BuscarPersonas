@@ -1,125 +1,109 @@
- 
 <!DOCTYPE html>
-<html lang="en">
-  <head>
+<html lang="es">
+<head>
     <meta charset="utf-8">
     <title>Pruebas de API Buscar Personas</title>
- <style type="text/css">
-	
-	h2{
-		color: #8BC34A;
-		background-color: #50614f;
-	}
-	table{
-		padding-top: 10px;
-		border-style: none;
-	}
-	
-	th{
-		background: #8BC34A;
-	}
-	
-	th{		
-		border-top-color: transparent;
-		border-right-color: transparent;
-		border-bottom-color: darkgreen;
-		border-left-color: transparent;
-		
-	}
-	#thnombres{
-	width: 350px;
-	}
-	td{		
-		border-top-color: transparent;
-		border-right-color: transparent;
-		border-bottom-color: darkgreen;
-		border-left-color: transparent;
-		text-align: left;
-		padding-left: 15px;
-	}
-	input{		
-		font-size: 15px;
-		color: #4CAF50;
-	}
-	
-</style>
-  </head>
-  <body>
+    <style>
+        h2 {
+            color: #8BC34A;
+            background-color: #50614f;
+            padding: 10px;
+            text-align: center;
+        }
+
+        table {
+            width: 100%;
+            margin-top: 10px;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            border: 1px solid darkgreen;
+            padding: 10px;
+            text-align: left;
+        }
+
+        th {
+            background: #8BC34A;
+        }
+
+        #thnombres {
+            width: 350px;
+        }
+
+        input {
+            font-size: 15px;
+            color: #4CAF50;
+            margin: 5px;
+        }
+    </style>
+</head>
+<body>
     <h2>Buscar Personas</h2>
-	
-    <input id="txtBusqueda" type="text" name="txtBusqueda" title="Aqui ingresar nombre o identificacion!!!">
-    <input type="button" value ="Buscar 🔎" onclick="javascript:Buscar()">
-    <input type="button" value ="Limpiar 🗑️" onclick="javascript:Limpiar()">
+
+    <input id="txtBusqueda" type="text" placeholder="Ingrese nombre o identificación">
+    <input type="button" value="Buscar 🔎" onclick="Buscar()">
+    <input type="button" value="Limpiar 🗑️" onclick="Limpiar()">
     
-    <table border=1 id = "tbResultado">
-    </table>                          
-	
-	
- </body>
+    <table id="tbResultado">
+        <thead>
+            <tr>
+                <th>Identificación</th>
+                <th id="thnombres">Nombre Completo</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        function Limpiar() {
+            document.getElementById('txtBusqueda').value = "";
+            document.querySelector("#tbResultado tbody").innerHTML = "";
+        }
+
+        async function Buscar() {
+            let valorBuscar = document.getElementById('txtBusqueda').value.trim();
+            if (valorBuscar.length < 1) return;
+
+            let requestData = {
+                identificacion: valorBuscar,
+                primernombre: "",
+                segundonombre: "",
+                primerapellido: "",
+                segundoapellido: ""
+            };
+
+            try {
+                let response = await $.ajax({
+                    url: "https://portalapi.minsa.gob.ni/wsconsultasipai/v1/consulta/info/obtenerDatosPersonaVacuna",
+                    method: "POST",
+                    contentType: "application/json",
+                    data: JSON.stringify(requestData),
+                });
+
+                let data = JSON.parse(JSON.parse(response).Data);
+                let tbody = document.querySelector("#tbResultado tbody");
+                tbody.innerHTML = ""; // Limpia resultados previos
+
+                if (!data.persona || data.persona.length === 0) {
+                    tbody.innerHTML = `<tr><td colspan="2">No hay datos compatibles con la búsqueda.</td></tr>`;
+                    return;
+                }
+
+                data.persona.forEach(persona => {
+                    let fila = `<tr>
+                                    <td>${persona.CodigoIdentificacion || "N/A"}</td>
+                                    <td>${persona.NombreCompleto || "N/A"}</td>
+                                </tr>`;
+                    tbody.innerHTML += fila;
+                });
+
+            } catch (error) {
+                console.error("Error en la búsqueda:", error);
+                alert("Error al buscar datos. Inténtelo de nuevo.");
+            }
+        }
+    </script>
+</body>
 </html>
-
-<script>  
-function Limpiar()
-{
-	document.getElementById('txtBusqueda').value  = "";
-    document.getElementById('tbResultado').innerHTML = "";
-}
-
-function Buscar()
-{
-	//Validando
-	if(document.getElementById('txtBusqueda').value.length < 1) 
-	  return false;
-	else
-	{
-		var txtValoraBuscar = document.getElementById('txtBusqueda').value;
-
-		var settings = {
-			"url": "https://portalapi.minsa.gob.ni/wsconsultasipai/v1/consulta/info/obtenerDatosPersonaVacuna",
-			"method": "POST",
-			"timeout": 0,
-			"headers": {
-				"Content-Type": "application/json"
-			},
-			"data": JSON.stringify({
-				"identificacion": "",
-				"primernombre": "DAVID",
-				"segundonombre": "Rafael",
-				"primerapellido": "RIVAS",
-				"segundoapellido": "Sanchez"
-			}),
-			};
-
-		$.ajax(settings).done(function (response) {
-				console.log(response);
-				
-				var data = response;
-
-				var Personas= JSON.parse(JSON.parse(data).Data);
-				
-				var tablaCabecerra = `<tr>                             
-											<th>Identificacion</th>                   
-											<th id="thnombres">Nombre Completo</th>               
-										</tr>`;
-				if(Personas.persona.length ==0) 
-				{			
-					tablaCabecerra = `<tr>                             
-												<th>No hay datos compatibles con la busqueda!!!</th>  
-											</tr>`;
-				}
-				
-
-				document.getElementById('tbResultado').innerHTML = tablaCabecerra;
-				for(x in Personas.persona)
-				{		
-					var htmlFila = "<tr>  <td>"+ Personas.persona[x].CodigoIdentificacion +"</td>  <td>"+ Personas.persona[x].NombreCompleto +"</td> </tr>";		
-					document.getElementById('tbResultado').insertRow(-1).innerHTML = htmlFila;
-				}
-			});
-
-
-	}	  
-
-}
-
-</script>
