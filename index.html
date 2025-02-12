@@ -82,7 +82,7 @@
                     data: JSON.stringify(requestData),
                 });
                 
-                let parsedResponse = JSON.parse(response);
+                let parsedResponse = JSON.parse(JSON.stringify(response));
                 let data = JSON.parse(parsedResponse.data[0].data);
                 let persona = data[0].PERSONA;
                 
