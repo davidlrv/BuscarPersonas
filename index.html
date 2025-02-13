@@ -26,7 +26,7 @@
   <body>
    
     <main class="container">
-        <h2 class="mt-3"> <i class="bi bi-person-bounding-box"></i> Buscar Personas</h2>
+        <h2 class="mt-3 mb-3"> <i class="bi bi-person-bounding-box"></i> Buscar Personas</h2>
 
         <div class="row">
             <div class="col">
@@ -39,19 +39,29 @@
             </div>
         </div>
      
-        
-        <table id="tbResultado" class="table mt-3">
-            <thead class="table-dark">
-                <tr>
-                    <th>Identificación</th>
-                    <th id="thnombres">Nombre Completo</th>
-                </tr>
-            </thead>
-            <tbody></tbody>
-        </table>
+        <div class="row mt-3">
+            <div class="col-4">
+                <div class="card text-center">
+                    <div class="card-header">
+                     <h5 id="Identificacion">2810309820002J</h3> 
+                    </div>
+                    <div class="card-body">
+                      <h5 class="card-title" id="NombreCompleto">David Leonardo Rivas Vargas</h5>
+                      <p class="card-text" id="Direccion">With supporting text below as a natural lead-in to additional content.</p>
+                      <p class="card-text"><strong>Edad: </strong> <span id="Edad"> 43 anos de edad con 2 meses </span> </p>
+                    </div>
+                    <div class="card-footer text-muted">
+                        <strong>Telefono: </strong> <span id="telf"> 89863234 </span>
+                    </div>
+                  </div>
+            </div>
+        </div>
+
+      <!-- Contenedor donde se insertará la alerta -->
+      <div id="alertContainer"></div>
 
     </main>
-    <footer class="pt-4 my-md-5 pt-md-5 border-top">&copy; <span id="year"></span>  CODENI.  <cite title="derechos reservados">Todos los derechos reservados.</cite></footer>
+    <footer class="border-top">&copy; <span id="year"></span>  CODENI.  <cite title="derechos reservados">Todos los derechos reservados.</cite></footer>
     <!-- Optional JavaScript; choose one of the two! -->
 
     <!-- Option 1: Bootstrap Bundle with Popper -->
@@ -72,9 +82,20 @@
 
     <script>
         document.getElementById("year").textContent = new Date().getFullYear();
+        function mostrarAlerta() {
+        let alertHTML = `
+            <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                <strong>Holy guacamole!</strong> You should check in on some of those fields below.
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        `;
+
+        document.getElementById("alertContainer").innerHTML = alertHTML;
+    }
+
         function Limpiar() {
             document.getElementById('txtBusqueda').value = "";
-            document.querySelector("#tbResultado tbody").innerHTML = "";
+           mostrarAlerta() 
         }
 
         async function Buscar() {
@@ -101,25 +122,31 @@
                 let data = JSON.parse(parsedResponse.data[0].data);
                 let persona = data[0].PERSONA;
                 
-                let tbody = document.querySelector("#tbResultado tbody");
-                tbody.innerHTML = ""; // Limpia resultados previos
+                // let tbody = document.querySelector("#tbResultado tbody");
+                // tbody.innerHTML = ""; // Limpia resultados previos
 
                 if (!persona) {
                     tbody.innerHTML = `<tr><td colspan="2">No hay datos compatibles con la búsqueda.</td></tr>`;
                     return;
                 }
                 
-                let fila = `<tr>
-                                <td>${persona.IDENTIFICACION_NUMERO || "N/A"}</td>
-                                <td>${persona.NOMBRE_COMPLETO || "N/A"}</td>
-                            </tr>`;
-                tbody.innerHTML += fila;
 
+                // Llenar los datos en la tarjeta
+                document.getElementById("Identificacion").textContent = persona.IDENTIFICACION_NUMERO || "N/A";
+                document.getElementById("NombreCompleto").textContent = persona.NOMBRE_COMPLETO || "N/A";
+                document.getElementById("Direccion").textContent = persona.DIRECCION_RESIDENCIA || "N/A";
+                document.getElementById("Edad").textContent = persona.EDAD || "N/A";
+                document.getElementById("telf").textContent = persona.TELEFONO || "N/A";
+
+
+               
             } catch (error) {
                 console.error("Error en la búsqueda:", error);
                 alert("Error al buscar datos. Inténtelo de nuevo.");
             }
         }
+
+        
     </script>
 </body>
 </html>
