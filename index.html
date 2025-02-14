@@ -28,6 +28,10 @@
     outline: 0;
     box-shadow: 0 0 0 .25rem rgb(183 253 221 / 15%);
 }
+div:where(.swal2-icon).swal2-info {
+    border-color: #198754 !important;
+    color: #198754 !important;
+}
 </style>
 
   </head>
@@ -177,7 +181,9 @@
                 Swal.fire({
                         title: "Uppps!",
                         text: "Error al buscar datos. Inténtelo de nuevo.",
-                        icon: "info"
+                        icon: "info",
+                        confirmButtonColor: "#198754",
+                        confirmButtonText: "Cerrar",
                         });
             }
         }
