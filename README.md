@@ -41,7 +41,7 @@ Este proyecto es un sitio web que permite la consulta de información de persona
 
 ## Uso
 
-- Ingresar a la URL del servidor local (por defecto `https://localhost:5001`).
+- Ingresar a la URL del servidor local (por defecto `https://davidlrv.github.io/BuscarPersonas/`).
 - Usar el buscador para ingresar criterios de búsqueda.
 - Ver los resultados y detalles de la persona consultada.
 
@@ -61,6 +61,5 @@ Este proyecto está bajo la licencia MIT. Ver el archivo `LICENSE` para más det
 
 ## Contacto
 
-Para consultas o sugerencias, puedes contactarnos en [correo@example.com](mailto\:correo@example.com).
-
+Para consultas o sugerencias, puedes contactarnos...
 a
