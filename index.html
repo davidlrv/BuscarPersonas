@@ -158,7 +158,7 @@ div:where(.swal2-icon).swal2-info {
                         <div class="col-xxl-4 col-xl-4 col-lg-4 col-md-6 col-sm-12 mt-3">
                                 <div class="card text-center border-success">
                                     <div class="card-header bg-success text-light">
-                                    <h5 id="Identificacion">` + persona.PERSONA.IDENTIFICACION_NUMERO  + ` </h5> 
+                                    <h5 id="Identificacion">` + transformarCadena(persona.PERSONA.IDENTIFICACION_NUMERO)   + ` </h5> 
                                     </div>
                                     <div class="card-body">
                                     <h5 class="card-title" id="NombreCompleto">` +persona.PERSONA.NOMBRE_COMPLETO + `</h5>
@@ -188,7 +188,9 @@ div:where(.swal2-icon).swal2-info {
             }
         }
 
-        
+        function transformarCadena(cadena) {
+            return `${cadena.slice(0, 3)}-${cadena.slice(3, 9)}-${cadena.slice(9)}`;
+        }
     </script>
 </body>
 </html>
