@@ -8,6 +8,8 @@
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.16.1/dist/sweetalert2.min.css" rel="stylesheet">
+
     <title> Buscar Personas</title>
 <style>
    footer {
@@ -19,30 +21,57 @@
     padding: 10px 0;
     text-align: center;
 }
-
+.form-control:focus {
+    color: #212529;
+    background-color: #fff;
+    border-color: #cef9e5;
+    outline: 0;
+    box-shadow: 0 0 0 .25rem rgb(183 253 221 / 15%);
+}
 </style>
 
   </head>
   <body>
    
     <main class="container">
-        <h2 class="mt-3 mb-3"> <i class="bi bi-person-bounding-box"></i> Buscar Personas!!</h2>
+        <h2 class="mt-3 mb-3 text-success" > <i class="bi bi-person-bounding-box"></i> Buscar Personas</h2>
 
         <div class="row">
-            <div class="col">
-              
-              <input id="txtBusqueda" type="text" class="form-control" placeholder="Ingrese nombre o identificación">
+            <div class="col-xxl-8 col-xl-8 col-lg-8 col-md-8 col-sm-12">
+                <div class="row">
+                    <div class="col-12">
+                        <input id="ci" type="text" class="form-control" placeholder="Ingrese Cedula de identificación">
+                    </div>
+                </div>
+
+                <div class="row ">
+                    <div class="col-xxl-3 col-xl-3 col-lg-3 col-md-3 col-6">
+                        <input id="nombre1" type="text" class="form-control mt-3" placeholder="Primer Nombre">
+                    </div>
+                    <div class="col-xxl-3 col-xl-3 col-lg-3 col-md-3 col-6">
+                        <input id="nombre2" type="text" class="form-control mt-3" placeholder="Segundo Nombre">
+                    </div>
+                    <div class="col-xxl-3 col-xl-3 col-lg-3 col-md-3 col-6">
+                        <input id="apellido1" type="text" class="form-control mt-3" placeholder="Primer Apelido">
+                     </div>
+                    <div class="col-xxl-3 col-xl-3 col-lg-3 col-md-3 col-6">
+                        <input id="apellido2" type="text" class="form-control mt-3 mb-3" placeholder="Segundo Apellido">
+                    </div>
+                </div>
+                
             </div>
-            <div class="col">
-                <button class="btn btn-outline-primary" type="button" onclick="Buscar()"><i class="bi bi-search"></i> Buscar  </button>
-                <button class="btn btn-outline-secondary" type="button" onclick="Limpiar()"> <i class="bi bi-trash"></i>  </button>
+            <div class="col-xxl-4 col-xl-4 col-lg-4 col-md-4 col-sm-12 d-flex justify-content-center align-items-center">
+                <button class="btn btn-outline-success" type="button" onclick="Buscar()"><i class="bi bi-search"></i> Buscar  </button>
+                <button class="btn btn-outline-secondary m-2" type="button" onclick="Limpiar()"> <i class="bi bi-trash"></i>  </button>
             </div>
         </div>
+
+       
      
-        <div class="row mt-3">
-            <div class="col-4">
-                <div class="card text-center">
-                    <div class="card-header">
+        <div class="row mt-3" id="Resultados">
+            <!-- <div class="col-xxl-4 col-xl-4 col-lg-4 col-md-6 col-sm-12 mt-3">
+                <div class="card text-center border-success">
+                    <div class="card-header bg-success text-light">
                      <h5 id="Identificacion">2810309820002J</h3> 
                     </div>
                     <div class="card-body">
@@ -50,12 +79,15 @@
                       <p class="card-text" id="Direccion">With supporting text below as a natural lead-in to additional content.</p>
                       <p class="card-text"><strong>Edad: </strong> <span id="Edad"> 43 anos de edad con 2 meses </span> </p>
                     </div>
-                    <div class="card-footer text-muted">
+                    <div class="card-footer  ">
                         <strong>Telefono: </strong> <span id="telf"> 89863234 </span>
                     </div>
                   </div>
-            </div>
+            </div> -->
+
         </div>
+
+        
 
       <!-- Contenedor donde se insertará la alerta -->
       <div id="alertContainer"></div>
@@ -66,12 +98,8 @@
 
     <!-- Option 1: Bootstrap Bundle with Popper -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
-
-    <!-- Option 2: Separate Popper and Bootstrap JS -->
-    <!--
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
-    -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.16.1/dist/sweetalert2.all.min.js"></script>
+   
 
    
 
@@ -82,32 +110,24 @@
 
     <script>
         document.getElementById("year").textContent = new Date().getFullYear();
-        function mostrarAlerta() {
-        let alertHTML = `
-            <div class="alert alert-warning alert-dismissible fade show" role="alert">
-                <strong>Holy guacamole!</strong> You should check in on some of those fields below.
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-        `;
-
-        document.getElementById("alertContainer").innerHTML = alertHTML;
-    }
-
+       
         function Limpiar() {
-            document.getElementById('txtBusqueda').value = "";
-           mostrarAlerta() 
+          // document.getElementById('txtBusqueda').value = "";
+          document.querySelectorAll("input").forEach(input => input.value = "");
+           document.getElementById("Resultados").innerHTML = "" ;
+           
         }
 
         async function Buscar() {
-            let valorBuscar = document.getElementById('txtBusqueda').value.trim();
-            if (valorBuscar.length < 1) return;
+           // let ci = document.getElementById('ci').value.trim();
+            //if (ci.length < 1) return;
 
             let requestData = {
-                identificacion: valorBuscar,
-                primernombre: "",
-                segundonombre: "",
-                primerapellido: "",
-                segundoapellido: ""
+                identificacion: document.getElementById('ci').value.trim(),
+                primernombre: document.getElementById('nombre1').value.trim(),
+                segundonombre: document.getElementById('nombre2').value.trim(),
+                primerapellido: document.getElementById('apellido1').value.trim(),
+                segundoapellido: document.getElementById('apellido2').value.trim()
             };
 
             try {
@@ -120,29 +140,45 @@
                 
                 let parsedResponse = JSON.parse(JSON.stringify(response));
                 let data = JSON.parse(parsedResponse.data[0].data);
-                let persona = data[0].PERSONA;
-                
-                // let tbody = document.querySelector("#tbResultado tbody");
-                // tbody.innerHTML = ""; // Limpia resultados previos
+           
+                document.getElementById("Resultados").innerHTML = "" ;  // Limpia resultados previos
 
-                if (!persona) {
+                if (!data[0].PERSONA) {
                     tbody.innerHTML = `<tr><td colspan="2">No hay datos compatibles con la búsqueda.</td></tr>`;
                     return;
                 }
                 
-
-                // Llenar los datos en la tarjeta
-                document.getElementById("Identificacion").textContent = persona.IDENTIFICACION_NUMERO || "N/A";
-                document.getElementById("NombreCompleto").textContent = persona.NOMBRE_COMPLETO || "N/A";
-                document.getElementById("Direccion").textContent = persona.DIRECCION_RESIDENCIA || "N/A";
-                document.getElementById("Edad").textContent = persona.EDAD || "N/A";
-                document.getElementById("telf").textContent = persona.TELEFONO || "N/A";
-
-
+                //let persona = { nombre: "David", edad: 30, ciudad: "Madrid" };
+                for (let persona of data) {
+                    let cardHTML = `
+                        <div class="col-xxl-4 col-xl-4 col-lg-4 col-md-6 col-sm-12 mt-3">
+                                <div class="card text-center border-success">
+                                    <div class="card-header bg-success text-light">
+                                    <h5 id="Identificacion">` + persona.PERSONA.IDENTIFICACION_NUMERO  + ` </h5> 
+                                    </div>
+                                    <div class="card-body">
+                                    <h5 class="card-title" id="NombreCompleto">` +persona.PERSONA.NOMBRE_COMPLETO + `</h5>
+                                    <p class="card-text" id="Direccion">` +persona.PERSONA.DIRECCION_RESIDENCIA  + `</p>
+                                    <p class="card-text"><strong>Edad: </strong> <span id="Edad">` +persona.PERSONA.EDAD + `</span> </p>
+                                    </div>
+                                    <div class="card-footer  ">
+                                        <strong>Telefono: </strong> <span id="telf"> ` +persona.PERSONA.TELEFONO  + `</span>
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                    document.getElementById("Resultados").innerHTML += cardHTML;         
+                    
+                }
+              
                
             } catch (error) {
-                console.error("Error en la búsqueda:", error);
-                alert("Error al buscar datos. Inténtelo de nuevo.");
+                
+                Swal.fire({
+                        title: "Uppps!",
+                        text: "Error al buscar datos. Inténtelo de nuevo.",
+                        icon: "info"
+                        });
             }
         }
 
