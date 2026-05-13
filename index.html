@@ -114,7 +114,7 @@ div:where(.swal2-icon).swal2-info {
 
             try {
                 let response = await $.ajax({
-                    url: "https://portalapi.minsa.gob.ni/wsconsultasipai/v1/consulta/info/obtenerDatosPersonaVacuna",
+                    url: "http://portalapi.minsa.gob.ni/wsconsultasipai/v1/consulta/info/obtenerDatosPersonaVacuna",
                     method: "POST",
                     contentType: "application/json",
                     data: JSON.stringify(requestData),
